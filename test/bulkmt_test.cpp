@@ -12,17 +12,10 @@ using namespace testing;
 class Bulkmt_Test : public ::testing::Test
 {
 protected:
-
-  // void SetUp(std::size_t a_nBlockSize)
-  // {      
-  //   auto pReader = std::make_shared<Otus::Reader>("main", a_nBlockSize, ssTestIn, ssMetricsOut);
-  //   auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut, ssMetricsOut);
-  //   pReader->Exec();
-  // }
   void Run(std::size_t a_nBlockSize, std::size_t a_szDelay = 1)
   {      
     auto pReader = std::make_shared<Otus::Reader>("main", a_nBlockSize, ssTestIn, ssMetricsMain);
-    auto pExecuter = Otus::Excuter::Create("log", pReader, ssTestOut, ssMetricsLog);
+    auto pExecuter = Otus::Executer::Create("log", pReader, ssTestOut, ssMetricsLog);
    
     pReader->Exec();
     std::this_thread::sleep_for(std::chrono::seconds(a_szDelay));

@@ -2,26 +2,26 @@
 
 namespace Otus {
 
-Excuter::Excuter(const std::string& a_strName, std::ostream& a_osOut, std::ostream& a_osMetricsOut)
+Executer::Executer(const std::string& a_strName, std::ostream& a_osOut, std::ostream& a_osMetricsOut)
   : m_osOut{a_osOut}
   , m_osMetricsOut{a_osMetricsOut}
   , m_bDone{false}
-  , m_thread{&Excuter::Procces, this, a_strName}
+  , m_thread{&Executer::Procces, this, a_strName}
 { }
 
-Excuter::~Excuter()
+Executer::~Executer()
 {
   JoinThred();
 }
 
-std::shared_ptr<Excuter> Excuter::Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader, std::ostream& a_osOut, std::ostream& a_osMetricsOut)
+std::shared_ptr<Executer> Executer::Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader, std::ostream& a_osOut, std::ostream& a_osMetricsOut)
 {
-  auto ptr = std::shared_ptr<Excuter>(new Excuter(a_strName, a_osOut, a_osMetricsOut));
+  auto ptr = std::shared_ptr<Executer>(new Executer(a_strName, a_osOut, a_osMetricsOut));
   ptr->SetReader(a_pReader);
   return ptr;
 }
 
-void Excuter::Update(const CommandBlock& a_CommandBlock) 
+void Executer::Update(const CommandBlock& a_CommandBlock) 
 {
   {
     std::unique_lock<std::mutex> lock(m_queueLock);
@@ -30,7 +30,7 @@ void Excuter::Update(const CommandBlock& a_CommandBlock)
   m_queueCheck.notify_all(); 
 }
 
-void Excuter::Procces(std::string a_strName)
+void Executer::Procces(std::string a_strName)
 {
   Counters counters{a_strName};
   CommandBlock commandBlock;
@@ -59,7 +59,7 @@ void Excuter::Procces(std::string a_strName)
   m_osMetricsOut << counters << std::endl;
 }
 
-void Excuter::JoinThred()
+void Executer::JoinThred()
 {
   m_bDone = true;
   m_queueCheck.notify_all();
@@ -68,7 +68,7 @@ void Excuter::JoinThred()
   }
 }
 
-void Excuter::SetReader(std::shared_ptr<Reader>& a_pReader)
+void Executer::SetReader(std::shared_ptr<Reader>& a_pReader)
 {
   m_pReader = a_pReader;
   auto ptrReader = m_pReader.lock();

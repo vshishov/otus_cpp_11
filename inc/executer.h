@@ -13,16 +13,16 @@
 
 namespace Otus {
 
-class Excuter : public IObserver<CommandBlock>, public std::enable_shared_from_this<Excuter>
+class Executer : public IObserver<CommandBlock>, public std::enable_shared_from_this<Executer>
 {
 public:
-  static std::shared_ptr<Excuter> Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader, std::ostream& a_osOut = std::cout, std::ostream& a_osMetricsOut = std::cout);
-  ~Excuter();
+  static std::shared_ptr<Executer> Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader, std::ostream& a_osOut = std::cout, std::ostream& a_osMetricsOut = std::cout);
+  ~Executer();
 
   void Update(const CommandBlock& a_CommandBlock) override;
 
 private:
-  Excuter(const std::string& a_strName, std::ostream& a_osOut, std::ostream& a_osMetricsOut);
+  Executer(const std::string& a_strName, std::ostream& a_osOut, std::ostream& a_osMetricsOut);
   void SetReader(std::shared_ptr<Reader>& a_pReader);
   
   void Procces(std::string a_strName);
