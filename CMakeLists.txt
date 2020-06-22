@@ -6,33 +6,40 @@ ELSE()
   set(VERSION 0.0.1)
 ENDIF()
 
-project(async VERSION ${VERSION})
+project(async VERSION ${VERSION} DESCRIPTION "Library of async bash command processing")
+
+set(CMAKE_CXX_STANDARD 14)
 
 find_package(Threads)
 find_package(Doxygen COMPONENTS dot)
 
-set(EXEC_NAME ${CMAKE_PROJECT_NAME})
-set(LIB_NAME ${CMAKE_PROJECT_NAME}_lib)
+set(EXEC_NAME ${CMAKE_PROJECT_NAME}_cli)
+set(LIB_NAME ${CMAKE_PROJECT_NAME})
 set(TEST_NAME gtest_${CMAKE_PROJECT_NAME})
 
-include_directories("inc/")
+set(INC_PATH "inc/")
 set(SRC_PATH "src/")
 set(TEST_PATH "test/")
 set(GTEST_SRCDIR "/usr/src/gtest/")
 
-add_executable(${EXEC_NAME} 
-  ${SRC_PATH}/main.cpp
-)
+include_directories(${INC_PATH})
 
-add_library(${LIB_NAME} 
+add_library(${LIB_NAME} SHARED
+  ${SRC_PATH}/async.cpp
   ${SRC_PATH}/reader.cpp
   ${SRC_PATH}/executer.cpp
   ${SRC_PATH}/logger.cpp
 )
 
+add_executable(${EXEC_NAME} 
+  ${SRC_PATH}/main.cpp
+)
+
 target_link_libraries(${LIB_NAME}
   ${CMAKE_THREAD_LIBS_INIT}
 )
+
+set_target_properties(${LIB_NAME} PROPERTIES PUBLIC_HEADER ${INC_PATH}/async.h)
 
 target_link_libraries(${EXEC_NAME} PRIVATE
   ${LIB_NAME} 
@@ -74,11 +81,6 @@ if(DOXYGEN_FOUND)
     COMMENT "Creating HTML documentation with Doxygen" VERBATIM)
 endif()
 
-set_target_properties(${EXEC_NAME} ${TEST_NAME} PROPERTIES
-    CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON
-)
-
 if (MSVC)
   target_compile_options(${EXEC_NAME} PRIVATE /W4)
   target_compile_options(${LIB_NAME} PRIVATE /W4)
@@ -89,7 +91,13 @@ else ()
   target_compile_options(${TEST_NAME} PRIVATE -Wall -Wextra -pedantic -Werror)
 endif()
 
-install(TARGETS ${EXEC_NAME} RUNTIME DESTINATION bin)
+include(GNUInstallDirs)
+install(TARGETS ${LIB_NAME}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+configure_file(async.pc.in ${CMAKE_CURRENT_BINARY_DIR}/async.pc @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/async.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_CONTACT wladimir.shishov@gmail.com)
