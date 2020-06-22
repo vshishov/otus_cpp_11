@@ -29,6 +29,7 @@ add_library(${LIB_NAME} SHARED
   ${SRC_PATH}/commander.cpp
   ${SRC_PATH}/executer.cpp
   ${SRC_PATH}/logger.cpp
+  ${SRC_PATH}/context.cpp
 )
 
 add_executable(${EXEC_NAME} 

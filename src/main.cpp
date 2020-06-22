@@ -1,6 +1,9 @@
 #include "commander.h"
 #include "executer.h"
 #include "logger.h"
+#include "async.h"
+
+#include "context.h"
 
 #include <iostream>
 #include <string>
@@ -40,10 +43,16 @@ int main(int argc, const char** argv)
   auto pLogger = Otus::Logger::Create("file", pCommander);
   auto pExecuter = Otus::Executer::Create("log", pCommander);  
   
+  auto pContext = std::make_shared<Otus::Context>(pCommander);
+
   std::string strLine;
   while ( std::getline(std::cin, strLine) ) {
-    pCommander->ProccessLine(strLine);
+    pContext->ProccessBuffer(strLine.c_str(), strLine.size());
   }
+  // std::string strLine;
+  // while ( std::getline(std::cin, strLine) ) {
+  //   pCommander->ProccessLine(strLine);
+  // }
 
   return 0;
 }

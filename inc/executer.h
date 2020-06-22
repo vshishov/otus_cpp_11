@@ -16,7 +16,7 @@ namespace Otus {
 class Executer : public IObserver<CommandBlock>, public std::enable_shared_from_this<Executer>
 {
 public:
-  static std::shared_ptr<Executer> Create(const std::string& a_strName, std::shared_ptr<Commander>& a_pReader, std::ostream& a_osOut = std::cout, std::ostream& a_osMetricsOut = std::cout);
+  static std::shared_ptr<Executer> Create(const std::string& a_strName, std::shared_ptr<Commander>& a_pCommander, std::ostream& a_osOut = std::cout, std::ostream& a_osMetricsOut = std::cout);
   ~Executer();
 
   void Update(const CommandBlock& a_CommandBlock) override;
