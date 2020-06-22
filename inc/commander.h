@@ -9,21 +9,22 @@
 
 namespace Otus {
 
-class Reader : public BaseObservable<CommandBlock>
+class Commander : public BaseObservable<CommandBlock>
 {
 public: 
-  Reader(const std::string& a_strName, std::size_t a_szBlockSize, std::istream& a_isIn = std::cin, std::ostream& a_osMetricsOut = std::cout);
-  ~Reader();
+  Commander(const std::string& a_strName, std::size_t a_szBlockSize, std::ostream& a_osMetricsOut = std::cout);
+  ~Commander();
 
   void Exec();
+  void ProccessLine(const std::string& a_strLine);
 
 private:
   void Flush();
 
 private:
-  std::istream& m_isIn;
   std::ostream& m_osMetricsOut;
   std::size_t m_szBlockSize;  
+  std::size_t m_szBlockDepth;
   Counters m_counters;
   CommandBlock m_CommandBlock;  
 };

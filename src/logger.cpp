@@ -19,10 +19,10 @@ Logger::~Logger()
   JoinTread();
 }
 
-std::shared_ptr<Logger> Logger::Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader, std::ostream& a_osMetricsOut)
+std::shared_ptr<Logger> Logger::Create(const std::string& a_strName, std::shared_ptr<Commander>& a_pCommander, std::ostream& a_osMetricsOut)
 {
   auto ptr = std::shared_ptr<Logger>{new Logger{a_strName, a_osMetricsOut}};
-  ptr->SetReader(a_pReader);
+  ptr->SetCommander(a_pCommander);
   return ptr;
 }
 
@@ -79,12 +79,12 @@ void Logger::JoinTread()
   }
 }
 
-void Logger::SetReader(std::shared_ptr<Reader>& a_pReader)
+void Logger::SetCommander(std::shared_ptr<Commander>& a_pCommander)
 {
-  m_pReader = a_pReader;
-  auto ptrReader = m_pReader.lock();
-  if (ptrReader) {
-    ptrReader->Subscribe(shared_from_this());
+  m_pCommander = a_pCommander;
+  auto ptrCommander = m_pCommander.lock();
+  if (ptrCommander) {
+    ptrCommander->Subscribe(shared_from_this());
   }
 }
 

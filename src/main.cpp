@@ -1,4 +1,4 @@
-#include "reader.h"
+#include "commander.h"
 #include "executer.h"
 #include "logger.h"
 
@@ -36,11 +36,14 @@ int main(int argc, const char** argv)
     return 1;
   }
 
-  auto pReader = std::make_shared<Otus::Reader>("main", static_cast<std::size_t>(lBlockSize));
-  auto pLogger = Otus::Logger::Create("file", pReader);
-  auto pExecuter = Otus::Executer::Create("log", pReader);  
+  auto pCommander = std::make_shared<Otus::Commander>("main", static_cast<std::size_t>(lBlockSize));
+  auto pLogger = Otus::Logger::Create("file", pCommander);
+  auto pExecuter = Otus::Executer::Create("log", pCommander);  
   
-  pReader->Exec();
+  std::string strLine;
+  while ( std::getline(std::cin, strLine) ) {
+    pCommander->ProccessLine(strLine);
+  }
 
   return 0;
 }

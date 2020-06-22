@@ -2,7 +2,7 @@
 
 #include "command.h"
 #include "observer.h"
-#include "reader.h"
+#include "commander.h"
 
 #include <memory>
 #include <fstream>
@@ -17,11 +17,11 @@ namespace Otus {
 class Logger : public IObserver<CommandBlock>, public std::enable_shared_from_this<Logger>
 {
 public:
-  static std::shared_ptr<Logger> Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader, std::ostream& a_osMetricsOut = std::cout);
+  static std::shared_ptr<Logger> Create(const std::string& a_strName, std::shared_ptr<Commander>& a_pReader, std::ostream& a_osMetricsOut = std::cout);
   ~Logger();
 
   void Update(const CommandBlock& a_Commands) override;
-  void SetReader(std::shared_ptr<Reader>& a_pReader);
+  void SetCommander(std::shared_ptr<Commander>& a_pCommander);
 
 private:
   Logger(const std::string& a_strName, std::ostream& a_osMetricsOut = std::cout);
@@ -30,7 +30,7 @@ private:
   void JoinTread();
 
 private:
-  std::weak_ptr<Reader> m_pReader;
+  std::weak_ptr<Commander> m_pCommander;
   std::ostream& m_osMetricsOut;
 
   std::vector<std::thread> m_threads;

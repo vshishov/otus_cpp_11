@@ -14,10 +14,10 @@ Executer::~Executer()
   JoinThred();
 }
 
-std::shared_ptr<Executer> Executer::Create(const std::string& a_strName, std::shared_ptr<Reader>& a_pReader, std::ostream& a_osOut, std::ostream& a_osMetricsOut)
+std::shared_ptr<Executer> Executer::Create(const std::string& a_strName, std::shared_ptr<Commander>& a_pCommander, std::ostream& a_osOut, std::ostream& a_osMetricsOut)
 {
   auto ptr = std::shared_ptr<Executer>(new Executer(a_strName, a_osOut, a_osMetricsOut));
-  ptr->SetReader(a_pReader);
+  ptr->SetCommander(a_pCommander);
   return ptr;
 }
 
@@ -68,12 +68,12 @@ void Executer::JoinThred()
   }
 }
 
-void Executer::SetReader(std::shared_ptr<Reader>& a_pReader)
+void Executer::SetCommander(std::shared_ptr<Commander>& a_pCommander)
 {
-  m_pReader = a_pReader;
-  auto ptrReader = m_pReader.lock();
-  if (ptrReader) {
-    ptrReader->Subscribe(shared_from_this());
+  m_pCommander = a_pCommander;
+  auto ptrCommander = m_pCommander.lock();
+  if (ptrCommander) {
+    ptrCommander->Subscribe(shared_from_this());
   }
 }
 

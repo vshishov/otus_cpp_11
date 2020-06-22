@@ -26,7 +26,7 @@ include_directories(${INC_PATH})
 
 add_library(${LIB_NAME} SHARED
   ${SRC_PATH}/async.cpp
-  ${SRC_PATH}/reader.cpp
+  ${SRC_PATH}/commander.cpp
   ${SRC_PATH}/executer.cpp
   ${SRC_PATH}/logger.cpp
 )
