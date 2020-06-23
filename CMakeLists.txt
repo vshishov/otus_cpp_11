@@ -50,7 +50,7 @@ if(EXISTS "${GTEST_SRCDIR}/CMakeLists.txt")
   add_subdirectory(${GTEST_SRCDIR}/ ${CMAKE_BINARY_DIR}/gtest/ EXCLUDE_FROM_ALL)
 
   add_executable(${TEST_NAME} 
-    ${TEST_PATH}/main_test.cpp
+    ${GTEST_SRCDIR}/src/gtest_main.cc
     ${TEST_PATH}/context_test.cpp  
   )
 
