@@ -1,6 +1,8 @@
 #pragma once
 
 #include "commander.h"
+#include "executer.h"
+#include "logger.h"
 
 #include <sstream>
 #include <memory>
@@ -16,7 +18,7 @@ namespace Otus {
 class Context
 {
 public:
-  Context(const std::shared_ptr<Commander>& a_pReader);
+  Context(std::size_t a_szBlockSize);
   ~Context();
 
   void ProccessBuffer(const char* a_Buffer, std::size_t a_szSize);
@@ -27,6 +29,9 @@ private:
   
 private:
   std::shared_ptr<Commander> m_pCommander;
+  std::shared_ptr<Executer> m_pExecuter;
+  std::shared_ptr<Logger> m_pLogger;
+
   std::stringstream m_ssInputStream;
 
   std::atomic<bool> m_bDone;

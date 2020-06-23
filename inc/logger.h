@@ -21,15 +21,19 @@ public:
   ~Logger();
 
   void Update(const CommandBlock& a_Commands) override;
-  void SetCommander(std::shared_ptr<Commander>& a_pCommander);
+
+  void SetContext(void* a_context);
 
 private:
   Logger(const std::string& a_strName, std::ostream& a_osMetricsOut = std::cout);
+  void SetCommander(std::shared_ptr<Commander>& a_pCommander);
 
   void Process(std::string a_strName);
   void JoinTread();
 
 private:
+  void* m_context;
+
   std::weak_ptr<Commander> m_pCommander;
   std::ostream& m_osMetricsOut;
 

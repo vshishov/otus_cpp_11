@@ -64,7 +64,7 @@ void Logger::Process(std::string a_strName)
   
   {
     std::unique_lock<std::mutex> locker(m_printLock);
-    m_osMetricsOut << counters << std::endl;
+    m_osMetricsOut << m_context << ' ' << counters << std::endl; 
   }
 }
 
@@ -86,6 +86,11 @@ void Logger::SetCommander(std::shared_ptr<Commander>& a_pCommander)
   if (ptrCommander) {
     ptrCommander->Subscribe(shared_from_this());
   }
+}
+
+void Logger::SetContext(void* a_context)
+{
+  m_context = a_context;
 }
 
 } // Otus::

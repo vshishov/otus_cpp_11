@@ -1,12 +1,21 @@
 #include "context.h"
 
+#include <string>
+
 namespace Otus {
 
-Context::Context(const std::shared_ptr<Commander>& a_pCommander)
-  : m_pCommander{a_pCommander}
-  , m_bDone{false}
+Context::Context(std::size_t a_szBlockSize)
+  : m_bDone{false}
   , m_thread{&Context::Procces, this}
-{ }
+{ 
+  m_pCommander = std::make_shared<Otus::Commander>("main", static_cast<std::size_t>(a_szBlockSize));
+  m_pLogger = Otus::Logger::Create("file", m_pCommander);
+  m_pExecuter = Otus::Executer::Create("log", m_pCommander); 
+
+  m_pCommander->SetContext(this); 
+  m_pLogger->SetContext(this); 
+  m_pExecuter->SetContext(this); 
+}
 
 Context::~Context()
 {
@@ -20,23 +29,22 @@ void Context::ProccessBuffer(const char* a_Buffer, std::size_t a_szSize)
     m_ssInputStream.write(a_Buffer, a_szSize);
   }
   m_bNotified = true;
-  std::cout << m_ssInputStream.str() << std::endl;
-  m_streamCheck.notify_one(); 
+  m_streamCheck.notify_one();
 }
 
 void Context::Procces()
 {
+  
   while (!m_bDone) {
     std::unique_lock<std::mutex> locker(m_streamLock);
-    // m_streamCheck.wait(locker, [&](){return !m_ssInputStream.eof() || m_bDone;});
-    // m_streamCheck.wait(locker, [&](){return m_bNotified || m_bDone;});
-    m_streamCheck.wait(locker);
-    
+    m_streamCheck.wait(locker, [&](){return m_bNotified || m_bDone;});
     std::string strLine;
-    while ( !std::getline(m_ssInputStream, strLine).eof() ) {
-      std::cout << "Commander - " << strLine << std::endl;
+    while ( std::getline(m_ssInputStream, strLine) ) {
       m_pCommander->ProccessLine(strLine);
     }
+    m_ssInputStream.clear();
+    m_ssInputStream.str("");
+    m_bNotified = false;
   }
 }
 

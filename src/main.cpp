@@ -1,9 +1,4 @@
-#include "commander.h"
-#include "executer.h"
-#include "logger.h"
 #include "async.h"
-
-#include "context.h"
 
 #include <iostream>
 #include <string>
@@ -39,20 +34,18 @@ int main(int argc, const char** argv)
     return 1;
   }
 
-  auto pCommander = std::make_shared<Otus::Commander>("main", static_cast<std::size_t>(lBlockSize));
-  auto pLogger = Otus::Logger::Create("file", pCommander);
-  auto pExecuter = Otus::Executer::Create("log", pCommander);  
+
   
-  auto pContext = std::make_shared<Otus::Context>(pCommander);
+  async::handle_t h1 = async::connect(lBlockSize);
+  async::handle_t h2 = async::connect(5);
 
   std::string strLine;
   while ( std::getline(std::cin, strLine) ) {
-    pContext->ProccessBuffer(strLine.c_str(), strLine.size());
+    async::receive(h1, strLine.c_str(), strLine.size());
+    async::receive(h2, strLine.c_str(), strLine.size());
   }
-  // std::string strLine;
-  // while ( std::getline(std::cin, strLine) ) {
-  //   pCommander->ProccessLine(strLine);
-  // }
+  async::disconnect(h1);
+  async::disconnect(h2);
 
   return 0;
 }

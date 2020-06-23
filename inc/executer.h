@@ -20,6 +20,8 @@ public:
   ~Executer();
 
   void Update(const CommandBlock& a_CommandBlock) override;
+  
+  void SetContext(void* a_context);
 
 private:
   Executer(const std::string& a_strName, std::ostream& a_osOut, std::ostream& a_osMetricsOut);
@@ -29,6 +31,8 @@ private:
   void JoinThred();
   
 private:
+  void* m_context;
+
   std::ostream& m_osOut;
   std::ostream& m_osMetricsOut;
   std::weak_ptr<Commander> m_pCommander;

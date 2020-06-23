@@ -17,11 +17,13 @@ public:
 
   void Exec();
   void ProccessLine(const std::string& a_strLine);
+  void SetContext(void* a_context);
 
 private:
   void Flush();
 
 private:
+  void* m_context;
   std::ostream& m_osMetricsOut;
   std::size_t m_szBlockSize;  
   std::size_t m_szBlockDepth;

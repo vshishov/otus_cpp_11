@@ -15,7 +15,7 @@ Commander::Commander(const std::string& a_strName, std::size_t a_szBlockSize, st
 
 Commander::~Commander()
 {
-  m_osMetricsOut << m_counters << std::endl; 
+  m_osMetricsOut << m_context << ' ' << m_counters << std::endl; 
 }
 
 void Commander::ProccessLine(const std::string& a_strLine)
@@ -54,6 +54,11 @@ void Commander::Flush()
     ++m_counters.blockCounter;
     m_CommandBlock.Clear();
   }
+}
+
+void Commander::SetContext(void* a_context)
+{
+  m_context = a_context;
 }
 
 } // Otus::

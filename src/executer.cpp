@@ -56,7 +56,7 @@ void Executer::Procces(std::string a_strName)
     }
   }
   
-  m_osMetricsOut << counters << std::endl;
+  m_osMetricsOut << m_context << ' ' << counters << std::endl; 
 }
 
 void Executer::JoinThred()
@@ -75,6 +75,11 @@ void Executer::SetCommander(std::shared_ptr<Commander>& a_pCommander)
   if (ptrCommander) {
     ptrCommander->Subscribe(shared_from_this());
   }
+}
+
+void Executer::SetContext(void* a_context)
+{
+  m_context = a_context;
 }
 
 } // Otus::
