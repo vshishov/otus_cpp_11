@@ -3,6 +3,36 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <future>
+
+void Test_1()
+{
+  std::this_thread::sleep_for(std::chrono::microseconds(2));
+  async::handle_t h1 = async::connect(3);
+  async::receive(h1, "11\n", 3);
+  async::receive(h1, "12\n", 3);
+  async::receive(h1, "13\n", 3);
+  async::receive(h1, "14\n", 3);
+  async::receive(h1, "15\n", 3);
+  async::receive(h1, "16\n", 3);
+  async::disconnect(h1);
+  std::this_thread::sleep_for(std::chrono::seconds(7));
+}
+
+
+void Test_2()
+{
+  async::handle_t h2 = async::connect(2);
+  async::receive(h2, "21\n", 3);
+  async::receive(h2, "22\n", 3);
+  async::receive(h2, "23\n", 3);
+  async::receive(h2, "24\n", 3);
+  async::receive(h2, "25\n", 3);
+  async::receive(h2, "26\n", 3);
+  async::disconnect(h2);
+  std::this_thread::sleep_for(std::chrono::seconds(5));
+}
+
 
 int main(int argc, const char** argv) 
 {  
@@ -37,15 +67,19 @@ int main(int argc, const char** argv)
 
   
   async::handle_t h1 = async::connect(lBlockSize);
-  async::handle_t h2 = async::connect(5);
+
+  auto result_1 = std::async(std::launch::async, Test_1);
+  auto result_2 = std::async(std::launch::async, Test_2);
 
   std::string strLine;
   while ( std::getline(std::cin, strLine) ) {
     async::receive(h1, strLine.c_str(), strLine.size());
-    async::receive(h2, strLine.c_str(), strLine.size());
   }
+  
   async::disconnect(h1);
-  async::disconnect(h2);
+
+  result_1.wait();
+  result_2.wait();
 
   return 0;
 }
