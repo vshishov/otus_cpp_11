@@ -51,7 +51,7 @@ if(EXISTS "${GTEST_SRCDIR}/CMakeLists.txt")
 
   add_executable(${TEST_NAME} 
     ${TEST_PATH}/main_test.cpp
-    ${TEST_PATH}/bulkmt_test.cpp  
+    ${TEST_PATH}/context_test.cpp  
   )
 
   target_link_libraries(${TEST_NAME}

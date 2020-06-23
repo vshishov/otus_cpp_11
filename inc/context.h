@@ -18,7 +18,13 @@ namespace Otus {
 class Context
 {
 public:
-  Context(std::size_t a_szBlockSize);
+  Context(
+    std::size_t a_szBlockSize, 
+    std::ostream& a_osLoggerOut = std::cout, 
+    std::ostream& a_osMainMetricsOut = std::cout, 
+    std::ostream& a_osLogMetricsOut = std::cout, 
+    std::ostream& a_oFileMetricsOut = std::cout
+  );
   ~Context();
 
   void ProccessBuffer(const char* a_Buffer, std::size_t a_szSize);

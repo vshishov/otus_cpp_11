@@ -64,8 +64,6 @@ int main(int argc, const char** argv)
     return 1;
   }
 
-
-  
   async::handle_t h1 = async::connect(lBlockSize);
 
   auto result_1 = std::async(std::launch::async, Test_1);

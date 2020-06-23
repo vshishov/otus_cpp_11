@@ -33,7 +33,7 @@ void Commander::ProccessLine(const std::string& a_strLine)
   } 
   else if (a_strLine == "}") {
     if (m_szBlockDepth == 0) {
-      throw std::logic_error("unexpected symbol '}'");
+      m_CommandBlock.Clear();
     }
     m_szBlockDepth--;
   }

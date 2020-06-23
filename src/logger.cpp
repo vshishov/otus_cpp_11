@@ -1,7 +1,11 @@
 #include "logger.h"
 #include "counter.h"
 
+#include <sstream>
+
 namespace Otus {
+
+const std::string SEPARATOR = "_";
 
 Logger::Logger(const std::string& a_strName, std::ostream& a_osMetricsOut)
   : m_osMetricsOut{a_osMetricsOut}
@@ -50,8 +54,10 @@ void Logger::Process(std::string a_strName)
     }
 
     if (commandBlock.Size()) {
-      std::string strLogName{"bulk_" + a_strName + "_" + commandBlock.GetTimeStamp() + ".log"};
-      std::ofstream log(strLogName, std::ios::out);
+      std::stringstream ssFileName;
+      ssFileName << "bulk" << SEPARATOR << a_strName << SEPARATOR << m_context << SEPARATOR << commandBlock.GetTimeStamp() << ".log";
+      
+      std::ofstream log(ssFileName.str(), std::ios::out);
 
       log << "bulk: " << commandBlock << std::endl;
       ++counters.blockCounter;
