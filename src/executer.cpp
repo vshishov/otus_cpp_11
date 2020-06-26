@@ -16,7 +16,7 @@ Executer::~Executer()
 
 std::shared_ptr<Executer> Executer::Create(const std::string& a_strName, std::shared_ptr<Commander>& a_pCommander, std::ostream& a_osOut, std::ostream& a_osMetricsOut)
 {
-  auto ptr = std::shared_ptr<Executer>(new Executer(a_strName, a_osOut, a_osMetricsOut));
+  auto ptr = std::shared_ptr<Executer>{ new Executer{a_strName, a_osOut, a_osMetricsOut}};
   ptr->SetCommander(a_pCommander);
   return ptr;
 }

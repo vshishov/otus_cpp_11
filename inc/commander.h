@@ -11,8 +11,8 @@ namespace Otus {
 
 class Commander : public BaseObservable<CommandBlock>
 {
-public: 
-  Commander(const std::string& a_strName, std::size_t a_szBlockSize, std::ostream& a_osMetricsOut = std::cout);
+public:
+  static std::shared_ptr<Commander> Create(const std::string& a_strName, std::size_t a_szBlockSize, std::ostream& a_osMetricsOut = std::cout);
   ~Commander();
 
   void Exec();
@@ -20,6 +20,8 @@ public:
   void SetContext(void* a_context);
 
 private:
+  Commander(const std::string& a_strName, std::size_t a_szBlockSize, std::ostream& a_osMetricsOut = std::cout);
+
   void Flush();
 
 private:

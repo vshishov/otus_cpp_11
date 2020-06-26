@@ -25,7 +25,7 @@ Logger::~Logger()
 
 std::shared_ptr<Logger> Logger::Create(const std::string& a_strName, std::shared_ptr<Commander>& a_pCommander, std::ostream& a_osMetricsOut)
 {
-  auto ptr = std::shared_ptr<Logger>{new Logger{a_strName, a_osMetricsOut}};
+  auto ptr = std::shared_ptr<Logger>{ new Logger{a_strName, a_osMetricsOut} };
   ptr->SetCommander(a_pCommander);
   return ptr;
 }

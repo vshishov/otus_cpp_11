@@ -14,7 +14,7 @@ Context::Context(
   : m_bDone{false}
   , m_thread{&Context::Procces, this}
 { 
-  m_pCommander = std::make_shared<Otus::Commander>("main", static_cast<std::size_t>(a_szBlockSize), a_osMainMetricsOut);
+  m_pCommander = Otus::Commander::Create("main", static_cast<std::size_t>(a_szBlockSize), a_osMainMetricsOut);
   m_pLogger = Otus::Logger::Create("file", m_pCommander, a_oFileMetricsOut);
   m_pExecuter = Otus::Executer::Create("log", m_pCommander, a_osLoggerOut, a_osLogMetricsOut); 
 
