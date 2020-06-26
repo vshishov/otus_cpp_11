@@ -64,7 +64,6 @@ void Logger::Process(std::string a_strName)
       counters.commandCounter += commandBlock.Size();
       commandBlock.Clear();
       log.close();
-      std::this_thread::sleep_for(std::chrono::seconds(1));
     }
   }
   
