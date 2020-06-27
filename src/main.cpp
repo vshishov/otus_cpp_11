@@ -16,6 +16,7 @@ void Test_1()
   async::receive(h1, "15\n", 3);
   async::receive(h1, "16\n", 3);
   async::disconnect(h1);
+  async::receive(h1, "16\n", 3);
   std::this_thread::sleep_for(std::chrono::seconds(7));
 }
 

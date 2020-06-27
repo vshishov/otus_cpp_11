@@ -22,15 +22,18 @@ static handle_t RegisterContext(const std::shared_ptr<Otus::Context>& a_pContext
 
 static void ProccessBuffer(handle_t handle, const char* data, std::size_t size)
 {
-  std::shared_ptr<Otus::Context> context;
+  std::shared_ptr<Otus::Context> pContext;
   {
     std::lock_guard<std::mutex> lock(_contextLock);
     auto iter = _Contexts.find(handle);
     if (iter != _Contexts.end()) {
-      context = iter->second;
+      pContext = iter->second;
     }
   }
-  context->ProccessBuffer(data, size);
+  
+  if (pContext) {
+    pContext->ProccessBuffer(data, size);
+  }
 }
 
 static void UnRegisterContext(handle_t handle)
