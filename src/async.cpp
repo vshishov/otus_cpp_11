@@ -45,10 +45,7 @@ static void UnRegisterContext(handle_t handle)
 handle_t connect(std::size_t bulk)
 {
   auto pContext = std::make_shared<Otus::Context>(bulk);
-  if (pContext) {
-    return RegisterContext(pContext);
-  }
-  return nullptr;
+  return RegisterContext(pContext);
 }
 
 void receive(handle_t handle, const char* data, std::size_t size)
